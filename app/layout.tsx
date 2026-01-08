@@ -5,7 +5,7 @@ import { ReactQueryProvider } from "@/providers/react-query";
 import { ReduxProvider } from "@/providers/redux";
 
 import { useCartPersist } from "@/features/cart/use-cart-persist";
-import { Header } from "@/shared/ui/header";
+import { Header } from "@/shared/ui/layout/header";
 
 export function CartPersistProvider({
   children,
@@ -23,12 +23,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body>
+      <body className="typography font-[Manrope]">
         <ReduxProvider>
           <CartPersistProvider>
             <ReactQueryProvider>
-              <Header />
-              {children}
+              <div className="min-h-screen flex flex-col items-center w-full py-5 bg-background">
+                <div className="w-full max-w-content px-4">
+                  <Header />
+                  {children}
+                </div>
+              </div>
             </ReactQueryProvider>
           </CartPersistProvider>
         </ReduxProvider>

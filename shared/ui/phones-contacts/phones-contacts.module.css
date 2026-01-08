@@ -1,0 +1,45 @@
+.dialogBase {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    background: white;
+    min-width: 280px;
+    border-radius: 1rem;
+    padding: 1rem 1.5rem 1.2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+}
+
+.dialogOpen {
+    animation: dialog-in 200ms ease-out;
+}
+
+@keyframes dialog-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes dialog-out {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+}
+
+/* backdrop — глобально, но логически рядом */
+:global(dialog::backdrop) {
+    background: rgba(0, 0, 0, .5);
+}
