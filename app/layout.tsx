@@ -28,7 +28,7 @@ export default function RootLayout({
           <CartPersistProvider>
             <ReactQueryProvider>
               <div className="min-h-screen flex flex-col items-center w-full py-5 bg-background">
-                <div className="w-full max-w-content px-4">
+                <div className="w-full max-w-content md:px-4">
                   <Header />
                   {children}
                 </div>

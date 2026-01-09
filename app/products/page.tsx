@@ -6,6 +6,7 @@ import {
 import { getCategories } from "@/entities/category/api";
 import { getProducts } from "@/entities/product/api";
 import ProductsClient from "./products-client";
+import { FeatureBanner } from "./feature-banner";
 
 export default async function ProductsPage() {
   const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ export default async function ProductsPage() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
+      <FeatureBanner className="mt-12.5" />
       <ProductsClient />
     </HydrationBoundary>
   );

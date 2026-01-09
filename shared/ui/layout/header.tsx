@@ -34,7 +34,7 @@ export function Header() {
   const count = useSelector(selectCartCount);
 
   return (
-    <RoundedBox className="bg-white">
+    <RoundedBox>
       <header>
         {/* MOBILE */}
         <div className="flex flex-col gap-2.5 xl:hidden">
