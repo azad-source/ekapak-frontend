@@ -24,8 +24,8 @@ export const MailIcon: React.FC<SvgIconProps> = (props) => {
       <path
         d="M4.80029 6.80078L9.60029 9.20078L14.4003 6.80078"
         stroke="black"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

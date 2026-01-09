@@ -1,20 +1,9 @@
-"use client";
-
+import { ClientProviders } from "@/providers/client-providers";
 import "./globals.css";
 import { ReactQueryProvider } from "@/providers/react-query";
 import { ReduxProvider } from "@/providers/redux";
 
-import { useCartPersist } from "@/features/cart/use-cart-persist";
 import { Header } from "@/shared/ui/layout/header";
-
-export function CartPersistProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  useCartPersist();
-  return children;
-}
 
 export default function RootLayout({
   children,
@@ -23,9 +12,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body className="typography font-[Manrope]">
+      <body className="font-[Manrope]">
         <ReduxProvider>
-          <CartPersistProvider>
+          <ClientProviders>
             <ReactQueryProvider>
               <div className="min-h-screen flex flex-col items-center w-full py-5 bg-background">
                 <div className="w-full max-w-content md:px-4">
@@ -34,7 +23,7 @@ export default function RootLayout({
                 </div>
               </div>
             </ReactQueryProvider>
-          </CartPersistProvider>
+          </ClientProviders>
         </ReduxProvider>
       </body>
     </html>

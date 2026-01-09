@@ -59,7 +59,7 @@ export const PhonesContacts = ({
 
   if (!isMobile) {
     return (
-      <div className="flex gap-5 title-tiny">
+      <div className="flex gap-5 text-lg font-bold">
         {phones.map((ph) => (
           <a key={ph} href={`tel:${ph}`} className="hover:underline">
             {formatPhoneNumber(ph)}
@@ -99,7 +99,7 @@ export const PhonesContacts = ({
 
           <h2 className="text-lg font-semibold">Выберите телефон</h2>
 
-          <div className="flex flex-col items-start gap-5 text-small">
+          <div className="flex flex-col items-start gap-5 text-base">
             {phones.map((ph) => (
               <a key={ph} href={`tel:${ph}`} className="hover:underline">
                 {formatPhoneNumber(ph)}

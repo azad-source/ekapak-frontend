@@ -15,7 +15,7 @@ export const MailContact: React.FC<IProps> = ({ email, isMobile = false }) => {
       className={isMobile ? "header-mobile-btn" : desktopCls}
     >
       <MailIcon />
-      {!isMobile && <span className="text-tiny">{email}</span>}
+      {!isMobile && <span className="text-sm">{email}</span>}
     </a>
   );
 };

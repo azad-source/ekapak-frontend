@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CartItem } from "./types";
+import { CartItem } from "../../features/cart/types";
 
 const STORAGE_KEY = "cart";
 

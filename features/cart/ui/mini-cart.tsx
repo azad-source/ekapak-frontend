@@ -1,8 +1,8 @@
 "use client";
 
-import { useSelector, useDispatch } from "react-redux";
-import { selectCartItems, selectCartTotal } from "../selectors";
-import { changeQuantity, removeItem } from "../slice";
+import { selectCart } from "@/store/selectors/cart-selectors";
+import { changeQuantity, removeItem } from "../../../store/slices/cart-slice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 interface Props {
   open: boolean;
@@ -10,9 +10,8 @@ interface Props {
 }
 
 export function MiniCart({ open, onClose }: Props) {
-  const dispatch = useDispatch();
-  const items = useSelector(selectCartItems);
-  const total = useSelector(selectCartTotal);
+  const dispatch = useAppDispatch();
+  const { items, total } = useAppSelector(selectCart);
 
   if (!open) return null;
 

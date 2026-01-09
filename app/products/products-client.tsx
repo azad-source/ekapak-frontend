@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getCategories } from "@/entities/category/api";
 import { getProducts } from "@/entities/product/api";
 import { useDispatch } from "react-redux";
-import { addItem } from "@/features/cart/slice";
+import { addItem } from "@/store/slices/cart-slice";
+import { SideMenu } from "@/shared/ui/side-menu/side-menu";
 
 export default function ProductsClient() {
   const dispatch = useDispatch();
@@ -24,21 +25,9 @@ export default function ProductsClient() {
   }
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="flex gap-2.5 mt-5">
       {/* Категории */}
-      <div>
-        <h2 className="text-xl font-semibold mb-3">Категории</h2>
-        <div className="flex flex-wrap gap-2">
-          {categories?.map((cat) => (
-            <span
-              key={cat.uuid}
-              className="px-3 py-1 rounded bg-gray-100 text-sm"
-            >
-              {cat.name}
-            </span>
-          ))}
-        </div>
-      </div>
+      <SideMenu items={categories} className="hidden 2xl:block" />
 
       {/* Товары */}
       <div>

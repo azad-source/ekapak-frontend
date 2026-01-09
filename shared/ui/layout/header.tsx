@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectCartCount } from "@/features/cart/selectors";
+import { selectCart } from "@/store/selectors/cart-selectors";
 import { MiniCart } from "@/features/cart/ui/mini-cart";
 import { RoundedBox } from "../rounded-block/rounded-block";
 import { LocationIcon } from "../icons/location-icon";
@@ -20,6 +20,7 @@ import { PhonesContacts } from "../phones-contacts/phones-contacts";
 import { ActionButton } from "../action-button/action-button";
 import { SocialLink } from "../social-link/social-link";
 import { MailContact } from "../mail-contact/mail-contact";
+import { useMounted } from "@/shared/hooks/use-mounted";
 
 const contacts = {
   email: "info@ekapak.ru",
@@ -31,7 +32,8 @@ const contacts = {
 export function Header() {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const count = useSelector(selectCartCount);
+  const { count } = useSelector(selectCart);
+  const mounted = useMounted();
 
   return (
     <RoundedBox>
@@ -64,7 +66,7 @@ export function Header() {
           <div className="flex">
             <div className="flex gap-2.5 items-center">
               <LocationIcon />
-              <span className="text-tiny">
+              <span className="text-sm">
                 г. Екатеринбург, ул. Старых Большевиков, 2А/2
               </span>
             </div>
@@ -93,7 +95,7 @@ export function Header() {
             <Logo />
 
             <button
-              className="h-13 flex gap-2.5 items-center rounded-sm bg-background py-3.5 px-5 title-tiny ml-7.5"
+              className="h-13 flex gap-2.5 items-center rounded-sm bg-background py-3.5 px-5 text-lg font-bold ml-7.5"
               onClick={() => {
                 alert("open catalog");
               }}
@@ -126,7 +128,7 @@ export function Header() {
               <ActionButton
                 icon={<CartIcon />}
                 label="Корзина"
-                badge={count}
+                badge={mounted ? count : undefined}
                 onClick={() => {
                   alert("open favorites");
                 }}
@@ -134,7 +136,7 @@ export function Header() {
             </div>
 
             <button
-              className="h-13 gap-2.5 items-center rounded-sm bg-blue text-white py-3.5 px-5 title-tiny ml-7.5 hidden xl:flex"
+              className="h-13 gap-2.5 items-center rounded-sm bg-blue text-white py-3.5 px-5 text-lg font-bold ml-7.5 hidden xl:flex"
               onClick={() => {
                 alert("order example");
               }}

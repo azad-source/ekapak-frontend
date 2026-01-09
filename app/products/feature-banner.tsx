@@ -10,10 +10,10 @@ export const FeatureBanner: React.FC<IProps> = ({ className }) => {
   return (
     <RoundedBox className={`2xl:px-10 2xl:py-10 ${className}`}>
       <div className="flex flex-col gap-5 w-[calc(100%-60px)]">
-        <div className="title-small 2xl:title-large z-10">
+        <div className="text-2xl font-bold 2xl:text-5xl z-10">
           Производство гибкой пластиковой упаковки
         </div>
-        <div className="text-tiny 2xl:text-medium z-10">
+        <div className="text-sm 2xl:text-lg z-10">
           По индивидуальным размерам и&nbsp;в&nbsp;минимальные сроки
         </div>
       </div>
