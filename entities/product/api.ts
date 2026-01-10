@@ -1,20 +1,25 @@
-import { fetcher } from "@/shared/api/fetcher";
-import { Product } from "./types";
+import { fetcher } from "@/api/fetcher";
+import {
+  PagedProductsRequest,
+  PagedProductsResponse,
+  ProductResponse,
+} from "./types";
 
 const BASE_URL = "https://api.ekapak.ru/api";
 
-export const getProducts = (params?: { category?: string; page?: number }) => {
-  const searchParams = new URLSearchParams();
-
-  if (params?.category) {
-    searchParams.set("category", params.category);
-  }
-
-  if (params?.page) {
-    searchParams.set("page", String(params.page));
-  }
+export const getProducts = (params?: PagedProductsRequest) => {
+  const searchParams = new URLSearchParams(
+    Object.entries(params ?? {})
+      .filter(([, value]) => value !== undefined && value !== null)
+      .map(([key, value]) => [key, String(value)])
+  );
 
   const query = searchParams.toString();
+  const url = `${BASE_URL}/products${query ? `?${query}` : ""}`;
 
-  return fetcher<Product[]>(`${BASE_URL}/products${query ? `?${query}` : ""}`);
+  return fetcher<PagedProductsResponse>(url);
+};
+
+export const getProductBySlug = (slug: string) => {
+  return fetcher<ProductResponse>(`${BASE_URL}/products/slug/${slug}`);
 };

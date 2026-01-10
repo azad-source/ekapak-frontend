@@ -2,14 +2,14 @@
 
 import { ReactQueryProvider } from "@/providers/react-query";
 import { ReduxProvider } from "@/providers/redux";
-import { useCartPersist } from "@/features/cart/use-cart-persist";
+import { RefsLoader } from "./refs-loader";
 
 export function ClientProviders({ children }: { children: React.ReactNode }) {
-  useCartPersist();
-
   return (
     <ReduxProvider>
-      <ReactQueryProvider>{children}</ReactQueryProvider>
+      <ReactQueryProvider>
+        <RefsLoader>{children}</RefsLoader>
+      </ReactQueryProvider>
     </ReduxProvider>
   );
 }
