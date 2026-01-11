@@ -22,7 +22,6 @@ export default async function ProductPage({ params }: PageProps) {
   const mainImage =
     product.images?.[0]?.original_url || ProductPlaceholderImage.src;
 
-  // Сортируем свойства: сначала важные, потом остальные
   const orderedPropertyKeys = [
     "Ширина, мм",
     "Толщина, мкм",
@@ -46,7 +45,6 @@ export default async function ProductPage({ params }: PageProps) {
   return (
     <div className="container mx-auto px-4 py-8 mt-8">
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Левая колонка: изображение */}
         <div className="shrink-0 w-full lg:w-1/2 flex justify-center">
           <Image
             src={mainImage}
@@ -57,7 +55,6 @@ export default async function ProductPage({ params }: PageProps) {
           />
         </div>
 
-        {/* Правая колонка: информация о товаре */}
         <div className="flex-1 flex flex-col gap-5">
           <h1 className="text-2xl font-bold text-gray-900">{product.name}</h1>
 
@@ -71,7 +68,6 @@ export default async function ProductPage({ params }: PageProps) {
             </div>
           )}
 
-          {/* Характеристики */}
           {allProperties.length > 0 && (
             <div className="mt-4 pt-4 border-t border-gray-200">
               <h2 className="text-lg font-semibold text-gray-900 mb-3">
@@ -90,7 +86,6 @@ export default async function ProductPage({ params }: PageProps) {
             </div>
           )}
 
-          {/* Варианты покупки */}
           {product.offers && product.offers.length > 0 && (
             <div className="mt-6 pt-6 border-t border-gray-200">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -130,10 +125,9 @@ export default async function ProductPage({ params }: PageProps) {
             </div>
           )}
 
-          {/* Информация о НДС */}
           {product.vat_rate != null && (
             <p className="text-xs text-gray-500 mt-2">
-              Включая НДС ({product.vat_rate}%)
+              Включая {product.vat_type} ({product.vat_rate}%)
             </p>
           )}
         </div>

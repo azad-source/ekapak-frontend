@@ -29,8 +29,6 @@ export function RefsLoader({ children }: { children: ReactNode }) {
     refetchOnWindowFocus: false,
   });
 
-  console.log("=== data?.categories", data?.categories);
-
   useEffect(() => {
     if (data?.categories) {
       dispatch(setCategories(data.categories.data));

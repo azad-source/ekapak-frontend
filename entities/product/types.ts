@@ -68,6 +68,7 @@ export interface PagedProductsRequest {
   page: number;
   per_page: number;
   category?: string;
+  search?: string;
 }
 
 export interface ProductResponse {
