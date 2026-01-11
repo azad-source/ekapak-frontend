@@ -5,7 +5,7 @@ import {
   ProductResponse,
 } from "./types";
 
-const BASE_URL = "https://api.ekapak.ru/api";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const getProducts = (params?: PagedProductsRequest) => {
   const searchParams = new URLSearchParams(
@@ -15,11 +15,11 @@ export const getProducts = (params?: PagedProductsRequest) => {
   );
 
   const query = searchParams.toString();
-  const url = `${BASE_URL}/products${query ? `?${query}` : ""}`;
+  const url = `${apiUrl}/products${query ? `?${query}` : ""}`;
 
   return fetcher<PagedProductsResponse>(url);
 };
 
 export const getProductBySlug = (slug: string) => {
-  return fetcher<ProductResponse>(`${BASE_URL}/products/slug/${slug}`);
+  return fetcher<ProductResponse>(`${apiUrl}/products/slug/${slug}`);
 };

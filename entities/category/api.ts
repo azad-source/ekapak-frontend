@@ -1,7 +1,7 @@
 import { fetcher } from "@/api/fetcher";
 import { CategoriesResponse, CategoryResponse } from "./types";
 
-const BASE_URL = "https://api.ekapak.ru/api";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const getCategories = (params?: { search?: string }) => {
   const searchParams = new URLSearchParams(
@@ -13,10 +13,10 @@ export const getCategories = (params?: { search?: string }) => {
   const query = searchParams.toString();
 
   return fetcher<CategoriesResponse>(
-    `${BASE_URL}/categories${query ? `?${query}` : ""}`
+    `${apiUrl}/categories${query ? `?${query}` : ""}`
   );
 };
 
 export const getCategoryBySlug = (slug: string) => {
-  return fetcher<CategoryResponse>(`${BASE_URL}/categories/slug/${slug}`);
+  return fetcher<CategoryResponse>(`${apiUrl}/categories/slug/${slug}`);
 };
