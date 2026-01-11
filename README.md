@@ -1,4 +1,6 @@
-<img src="public/demo-screen.png" alt="Демонстрация" width="600" />
+<a href='https://ekapak-frontend.vercel.app/'>
+    <img src="public/demo-screen.png" alt="Демонстрация" width="600" />
+</a>
 
 ## 🛠 Стек
 
