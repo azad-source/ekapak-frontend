@@ -17,7 +17,7 @@ interface SearchInputProps {
   placeholder?: string;
   size?: SizeProp;
   className?: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({
@@ -42,7 +42,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   }, [pathname]);
 
   const handleInput = (val: string) => {
-    onChange(val);
+    onChange?.(val);
     const params = new URLSearchParams(searchParams.toString());
     if (val) {
       params.set("search", val);

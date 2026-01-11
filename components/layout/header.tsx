@@ -31,7 +31,6 @@ const contacts = {
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const { count } = useSelector(selectCart);
   const mounted = useMounted();
 
@@ -53,12 +52,7 @@ export function Header() {
               />
             </div>
           </div>
-          <SearchInput
-            size="small"
-            value={searchQuery}
-            onChange={setSearchQuery}
-            className="grow"
-          />
+          <SearchInput size="small" className="grow" />
         </div>
 
         {/* DESKTOP */}
@@ -104,11 +98,7 @@ export function Header() {
               <span>Каталог</span>
             </button>
 
-            <SearchInput
-              value={searchQuery}
-              onChange={setSearchQuery}
-              className="grow ml-2.5"
-            />
+            <SearchInput className="grow ml-2.5" />
 
             <div className="items-center gap-7.5 ml-8.5 hidden xl:flex">
               <ActionButton
