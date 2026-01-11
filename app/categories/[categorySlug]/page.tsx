@@ -13,6 +13,8 @@ import { PagedProductsResponse } from "@/entities/product/types";
 import { getProducts } from "@/entities/product/api";
 import { CategoryResponse } from "@/entities/category/types";
 import { DEFAULT_PAGE_SIZE } from "@/constants/paging";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs/breadcrumbs";
+import { getBreadcrumbs } from "@/components/shared/breadcrumbs/helpers";
 
 interface PageProps {
   params: Promise<{
@@ -73,9 +75,14 @@ export default async function SubCategoryPage({
 
   const products = productsResponse?.data ?? [];
 
+  const breadcrumbs = [
+    ...getBreadcrumbs([...(category.parents || []), category]),
+  ];
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TitleBanner className="mt-12.5" name={category.name} />
+      <Breadcrumbs items={breadcrumbs} className="mt-10" />
+      <TitleBanner className="mt-4" name={category.name} />
       <div className="flex gap-2.5 mt-5">
         <SideMenu className="hidden 2xl:block" />
 

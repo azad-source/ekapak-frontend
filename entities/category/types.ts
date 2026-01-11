@@ -41,5 +41,5 @@ export interface Category {
   image_url?: string | null;
   min_price?: string | null;
   products?: CategoryProduct[] | null;
-  parents?: string;
+  parents?: Category[] | null;
 }

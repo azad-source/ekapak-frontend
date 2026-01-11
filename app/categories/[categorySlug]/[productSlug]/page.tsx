@@ -4,6 +4,11 @@ import Image from "next/image";
 import ProductPlaceholderImage from "@/public/product-placeholder.png";
 import { Product } from "@/entities/product/types";
 import { AddToCartButton } from "./components/add-to-cart-button";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs/breadcrumbs";
+import { getBreadcrumbs } from "@/components/shared/breadcrumbs/helpers";
+import { QueryClient } from "@tanstack/react-query";
+import { getCategoryBySlug } from "@/entities/category/api";
+import { CategoryResponse } from "@/entities/category/types";
 
 interface PageProps {
   params: Promise<{
@@ -13,11 +18,29 @@ interface PageProps {
 }
 
 export default async function ProductPage({ params }: PageProps) {
-  const { productSlug } = await params;
+  const queryClient = new QueryClient();
+
+  const { productSlug, categorySlug } = await params;
   const productResponse = await getProductBySlug(productSlug);
   const product: Product | undefined = productResponse?.data;
 
   if (!product) notFound();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["category", categorySlug],
+    queryFn: () => getCategoryBySlug(categorySlug),
+  });
+
+  const categoryResponse = queryClient.getQueryData<CategoryResponse>([
+    "category",
+    categorySlug,
+  ]);
+
+  const category = categoryResponse?.data;
+
+  if (!category) {
+    notFound();
+  }
 
   const mainImage =
     product.images?.[0]?.original_url || ProductPlaceholderImage.src;
@@ -42,94 +65,105 @@ export default async function ProductPage({ params }: PageProps) {
     ...otherProperties,
   ];
 
+  const breadcrumbs = [
+    ...getBreadcrumbs([...(category.parents || []), category]),
+    { caption: product.name, link: "" },
+  ];
+
   return (
-    <div className="container mx-auto px-4 py-8 mt-8">
-      <div className="flex flex-col lg:flex-row gap-8">
-        <div className="shrink-0 w-full lg:w-1/2 flex justify-center">
-          <Image
-            src={mainImage}
-            alt={product.name}
-            width={400}
-            height={400}
-            className="object-contain rounded-lg border border-gray-200 max-w-full h-auto"
-          />
-        </div>
+    <div>
+      <Breadcrumbs items={breadcrumbs} className="mt-10" />
 
-        <div className="flex-1 flex flex-col gap-5">
-          <h1 className="text-2xl font-bold text-gray-900">{product.name}</h1>
+      <div className="container mx-auto px-4 py-8 mt-4">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="shrink-0 w-full lg:w-1/2 flex justify-center">
+            <Image
+              src={mainImage}
+              alt={product.name}
+              width={400}
+              height={400}
+              className="object-contain rounded-lg border border-gray-200 max-w-full h-auto"
+            />
+          </div>
 
-          {product.article && (
-            <p className="text-sm text-gray-600">Артикул: {product.article}</p>
-          )}
+          <div className="flex-1 flex flex-col gap-5">
+            <h1 className="text-2xl font-bold text-gray-900">{product.name}</h1>
 
-          {product.description && (
-            <div className="text-gray-700 whitespace-pre-line">
-              {product.description}
-            </div>
-          )}
+            {product.article && (
+              <p className="text-sm text-gray-600">
+                Артикул: {product.article}
+              </p>
+            )}
 
-          {allProperties.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900 mb-3">
-                Характеристики
-              </h2>
-              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-                {allProperties.map((key) => (
-                  <div key={key} className="flex justify-between">
-                    <dt className="text-gray-600">{key}:</dt>
-                    <dd className="text-gray-900 font-medium ml-2">
-                      {product.properties[key] || "—"}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          )}
-
-          {product.offers && product.offers.length > 0 && (
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Доступные предложения
-              </h2>
-              <div className="space-y-3">
-                {product.offers.map((offer) => (
-                  <div
-                    key={offer.uuid}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-gray-50 rounded-lg"
-                  >
-                    <div className="flex-1">
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-lg font-bold text-gray-900">
-                          {new Intl.NumberFormat("ru-RU", {
-                            style: "currency",
-                            currency: offer.currency || "RUB",
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          }).format(parseFloat(offer.price || "0"))}
-                        </span>
-                        <span className="text-gray-600">
-                          / {product.unit_name || offer.unit}
-                        </span>
-                      </div>
-                      <div className="mt-1 text-sm text-gray-600">
-                        В наличии: {offer.quantity} {offer.unit}
-                      </div>
-                    </div>
-                    <AddToCartButton
-                      product={product}
-                      className="w-full sm:w-auto"
-                    />
-                  </div>
-                ))}
+            {product.description && (
+              <div className="text-gray-700 whitespace-pre-line">
+                {product.description}
               </div>
-            </div>
-          )}
+            )}
 
-          {product.vat_rate != null && (
-            <p className="text-xs text-gray-500 mt-2">
-              Включая {product.vat_type} ({product.vat_rate}%)
-            </p>
-          )}
+            {allProperties.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900 mb-3">
+                  Характеристики
+                </h2>
+                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                  {allProperties.map((key) => (
+                    <div key={key} className="flex justify-between">
+                      <dt className="text-gray-600">{key}:</dt>
+                      <dd className="text-gray-900 font-medium ml-2">
+                        {product.properties[key] || "—"}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
+
+            {product.offers && product.offers.length > 0 && (
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  Доступные предложения
+                </h2>
+                <div className="space-y-3">
+                  {product.offers.map((offer) => (
+                    <div
+                      key={offer.uuid}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-gray-50 rounded-lg"
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-lg font-bold text-gray-900">
+                            {new Intl.NumberFormat("ru-RU", {
+                              style: "currency",
+                              currency: offer.currency || "RUB",
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            }).format(parseFloat(offer.price || "0"))}
+                          </span>
+                          <span className="text-gray-600">
+                            / {product.unit_name || offer.unit}
+                          </span>
+                        </div>
+                        <div className="mt-1 text-sm text-gray-600">
+                          В наличии: {offer.quantity} {offer.unit}
+                        </div>
+                      </div>
+                      <AddToCartButton
+                        product={product}
+                        className="w-full sm:w-auto"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {product.vat_rate != null && (
+              <p className="text-xs text-gray-500 mt-2">
+                Включая {product.vat_type} ({product.vat_rate}%)
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
